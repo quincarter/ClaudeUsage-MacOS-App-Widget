@@ -132,6 +132,53 @@ final class ScreenshotGeneratorTests: XCTestCase {
         }
         try renderView(menuBarPopup, size: CGSize(width: 340, height: 310), to: screenshotsDir.appendingPathComponent("menubar-popup.png"))
 
+        // 8. Render Peak Hours Active State (Weekdays 5:00 AM – 11:00 AM PT / 8:00 AM – 2:00 PM ET)
+        let peakStatus = PeakStatus.peakActive(
+            endsAt: now.addingTimeInterval(3600 * 2 + 1800),
+            timeRemaining: 3600 * 2 + 1800
+        )
+
+        let peakSlice = DayTimelineSlice(
+            peakStartFraction: 8.0 / 24.0,
+            peakEndFraction: 14.0 / 24.0,
+            currentFraction: 10.5 / 24.0, // Inside peak zone
+            hasPeakToday: true,
+            localStartString: "8:00 AM",
+            localEndString: "2:00 PM"
+        )
+
+        let peakEntry = ClaudeUsageEntry(
+            date: now,
+            status: peakStatus,
+            slice: peakSlice,
+            accounts: scrubbedAccounts,
+            primaryAccount: account1
+        )
+
+        // Peak Large Widget
+        let peakLargeWidget = widgetWrapper(width: 329, height: 345) {
+            LargeWidgetView(entry: peakEntry)
+        }
+        try renderView(peakLargeWidget, size: CGSize(width: 349, height: 365), to: screenshotsDir.appendingPathComponent("widget-large-peak.png"))
+
+        // Peak Medium Widget
+        let peakMediumWidget = widgetWrapper(width: 329, height: 155) {
+            MediumWidgetView(entry: peakEntry)
+        }
+        try renderView(peakMediumWidget, size: CGSize(width: 349, height: 175), to: screenshotsDir.appendingPathComponent("widget-medium-peak.png"))
+
+        // Peak Small Widget
+        let peakSmallWidget = widgetWrapper(width: 155, height: 155) {
+            SmallWidgetView(entry: peakEntry)
+        }
+        try renderView(peakSmallWidget, size: CGSize(width: 175, height: 175), to: screenshotsDir.appendingPathComponent("widget-small-peak.png"))
+
+        // Peak App Window Mockup (860 x 540 pt)
+        let appWindowPeak = macOSWindowWrapper(title: "Claude Usage — Rate Limits & Peak Horizon", width: 860, height: 540) {
+            DashboardMockContentView(status: peakStatus, slice: peakSlice, accounts: scrubbedAccounts)
+        }
+        try renderView(appWindowPeak, size: CGSize(width: 888, height: 568), to: screenshotsDir.appendingPathComponent("app-dashboard-peak.png"))
+
         print("Successfully generated all screenshots in:", screenshotsDir.path)
     }
 
@@ -319,12 +366,12 @@ struct DashboardMockContentView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 3) {
                         HStack(spacing: 6) {
-                            Circle().fill(Color.offPeakGreen).frame(width: 8, height: 8)
-                            Text("OFF-PEAK — Starts in 2h 15m")
+                            Circle().fill(status.isPeak ? Color.peakRed : Color.offPeakGreen).frame(width: 8, height: 8)
+                            Text(status.isPeak ? "PEAK ACTIVE — Ends in 2h 30m" : "OFF-PEAK — Starts in 2h 15m")
                                 .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(.offPeakGreen)
+                                .foregroundColor(status.isPeak ? Color.peakRed : Color.offPeakGreen)
                         }
-                        Text("Standard limits and maximum token generation performance active.")
+                        Text(status.isPeak ? "⚠️ High traffic window. Reduced message limits & higher generation response times in effect." : "Standard limits and maximum token generation performance active.")
                             .font(.system(size: 11))
                             .foregroundColor(.gray)
                     }
@@ -341,7 +388,7 @@ struct DashboardMockContentView: View {
                     .cornerRadius(6)
                 }
                 .padding(12)
-                .background(Color.offPeakGreen.opacity(0.12))
+                .background((status.isPeak ? Color.peakRed : Color.offPeakGreen).opacity(0.12))
                 .cornerRadius(8)
 
                 // Timeline

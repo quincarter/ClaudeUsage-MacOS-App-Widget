@@ -2,6 +2,16 @@
 
 A native macOS menu bar app and WidgetKit desktop suite built with **SwiftUI** and **Swift 6** for tracking Claude usage across multiple accounts and monitoring Claude's global peak hours in real time.
 
+> ### 💡 Why Claude Usage?
+> **Are you a Claude user? Do you have one or multiple accounts?**
+>
+> If you rely heavily on Claude for coding, research, or daily workflows, you've almost certainly hit that dreaded mid-flow roadblock: suddenly Anthropic gouges your session limits or throttles response speeds during **weekday peak traffic hours** right when you need it most.
+>
+> I built **Claude Usage** to take the guesswork out of rate limits. Whether you manage a personal Claude Pro account, an enterprise workspace, heavy Claude Code agent sessions, or direct Anthropic API keys, this app gives you complete, real-time visibility over:
+> - **Peak Hour Horizon**: Real-time tracking of Claude's global peak traffic windows (**Weekdays 5:00 AM – 11:00 AM PT / 8:00 AM – 2:00 PM ET**) so you know if you're invoking during high-traffic throttled windows.
+> - **Live Session & Weekly Limits**: Instant visibility into your 5-hour rolling session limit, 7-day volume cap, and exact clock-based reset times (e.g., `"Resets at 5:30 PM today"` and `"Weekly: 95% (Fri 6:00 AM)"`).
+> - **Multiple Interfaces**: Seamless access via a full **macOS Desktop Dashboard**, a lightweight **Menu Bar Popover**, and native **Desktop Widgets across all sizes (Small, Medium, Large)** directly on your desktop wallpaper or Notification Center.
+
 <p align="center">
   <img src="assets/screenshots/app-dashboard.png" alt="Claude Usage Main Dashboard" width="820" />
 </p>
@@ -13,7 +23,7 @@ A native macOS menu bar app and WidgetKit desktop suite built with **SwiftUI** a
 Monitor your active accounts and peak status at a glance from your macOS Desktop or Notification Center.
 
 <p align="center">
-  <img src="assets/screenshots/widget-large.png" alt="Large Desktop Widget" width="340" />
+  <img src="assets/screenshots/widget-large.png" alt="Large Desktop Widget (Off-Peak)" width="340" />
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/screenshots/menubar-popup.png" alt="Menu Bar Popover" width="310" />
 </p>
@@ -30,6 +40,26 @@ Monitor your active accounts and peak status at a glance from your macOS Desktop
 | **Medium Widget** | Daylight horizon & side-by-side accounts | Visual peak horizon bar, current time indicator needle, and primary & secondary account usage cards. |
 | **Small Widget** | Compact glanceability | Peak status badge, countdown timer, and primary account quota meter. |
 | **Menu Bar Extra** | Quick access popover | Live menu bar icon, 1-click usage synchronization, and fast dashboard access (`⌘O`). |
+
+---
+
+## ⚡️ Peak Hours Active State
+
+During Claude's weekday peak traffic windows (**Monday–Friday, 5:00 AM – 11:00 AM PT**), the desktop widgets and application automatically switch into **Peak Active** mode. Status indicators turn red, the daylight needle tracks inside the illuminated peak band, and active countdowns display exactly when standard response speeds and limits resume.
+
+<p align="center">
+  <img src="assets/screenshots/app-dashboard-peak.png" alt="Claude Usage Main Dashboard in Peak Active State" width="820" />
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/widget-large-peak.png" alt="Large Desktop Widget in Peak Active State" width="340" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/widget-small-peak.png" alt="Small Desktop Widget in Peak Active State" width="220" />
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/widget-medium-peak.png" alt="Medium Desktop Widget in Peak Active State" width="460" />
+</p>
 
 ---
 
