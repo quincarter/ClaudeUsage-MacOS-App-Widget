@@ -19,6 +19,28 @@ A native macOS menu bar app and WidgetKit desktop suite built with **SwiftUI** a
 
 ---
 
+## 📦 Download & Installation
+
+The easiest way to install Claude Usage is to download the pre-built `.dmg` from [GitHub Releases](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases):
+
+[![Download DMG](https://img.shields.io/badge/Download-macOS%20DMG%20(v1.0.0)-007AFF?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases/latest/download/ClaudeUsage-v1.0.0.dmg)
+[![GitHub Release](https://img.shields.io/github/v/release/quincarter/ClaudeUsage-MacOS-App-Widget?style=for-the-badge&color=2ea44f)](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases/latest)
+
+1. Download [**ClaudeUsage-v1.0.0.dmg**](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases/latest/download/ClaudeUsage-v1.0.0.dmg).
+2. Open the `.dmg` and drag **ClaudeUsage.app** into your **Applications** folder.
+3. Launch **ClaudeUsage** from `/Applications`.
+
+> [!NOTE]
+> **First Launch on macOS (Gatekeeper)**:
+> Because this open-source app is signed ad-hoc without an Apple Developer ID certificate, macOS will show a security prompt on first launch.
+> - **Option 1**: Right-click (or Control-click) `ClaudeUsage.app` in your Applications folder and click **Open**, then confirm **Open**.
+> - **Option 2**: Run this one-line command in Terminal:
+>   ```bash
+>   xattr -cr /Applications/ClaudeUsage.app
+>   ```
+
+---
+
 ## 📸 Desktop Widgets & Menu Bar
 
 Monitor your active accounts and peak status at a glance from your macOS Desktop or Notification Center.
@@ -116,6 +138,13 @@ xcodebuild test -project ClaudeUsage.xcodeproj -scheme ClaudeUsageTests
 xcodebuild build -project ClaudeUsage.xcodeproj -scheme ClaudeUsage -configuration Debug
 ```
 Copy `ClaudeUsage.app` to `/Applications/` to enable WidgetKit discovery in macOS desktop widget gallery.
+
+### 5. Package as DMG Installer
+To build the Release configuration and package it into a compressed `.dmg`:
+```bash
+./scripts/build_dmg.sh v1.0.0
+```
+This outputs `dist/ClaudeUsage-v1.0.0.dmg` with `/Applications` drag-and-drop installer.
 
 ---
 

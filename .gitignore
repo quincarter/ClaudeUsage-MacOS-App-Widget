@@ -9,6 +9,8 @@ Icon?
 
 # Xcode & Build Artifacts
 build/
+dist/
+*.dmg
 DerivedData/
 *.moved-builder
 *.hmap

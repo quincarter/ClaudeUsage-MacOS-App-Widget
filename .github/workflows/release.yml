@@ -1,0 +1,58 @@
+name: Release DMG
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: macos-14
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Determine Version Tag
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and Package DMG
+        run: |
+          ./scripts/build_dmg.sh "${{ steps.get_version.outputs.version }}"
+
+      - name: Publish Release to GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.dmg
+          generate_release_notes: true
+          name: "Release ${{ steps.get_version.outputs.version }}"
+          body: |
+            ### Claude Usage & Peak Time Tracker for macOS
+
+            Download and open **ClaudeUsage-${{ steps.get_version.outputs.version }}.dmg**, then drag **ClaudeUsage.app** to your **Applications** folder.
+
+            > [!NOTE]
+            > **First Launch on macOS (Gatekeeper)**:
+            > Because this app is an open-source project signed ad-hoc without a paid Apple Developer certificate, macOS will show an alert on first launch.
+            > - **Option 1**: Right-click (or Control-click) `ClaudeUsage.app` in `/Applications` and select **Open**, then click **Open** again.
+            > - **Option 2**: Run in Terminal:
+            >   ```bash
+            >   xattr -cr /Applications/ClaudeUsage.app
+            >   ```
