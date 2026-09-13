@@ -1,0 +1,44 @@
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Xcode & Build Artifacts
+build/
+DerivedData/
+*.moved-builder
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xcresult
+*.xccheckout
+
+# Xcode User Data (Breakpoints, Window layout, user schemes)
+# CRITICAL: Do not commit user-specific state to git
+xcuserdata/
+*.xcuserdatad
+*.xcuserstate
+project.xcworkspace/xcuserdata/
+
+# Swift Package Manager & Dependencies
+.build/
+.swiftpm/
+
+# Local Editor and Temporary Files
+*.swp
+*.swo
+*~
+*.bak
+*.orig
+.idea/
+.vscode/
+
+# Environment and Local Secrets (Defense-in-depth)
+*.env
+*.env.local
+*.local

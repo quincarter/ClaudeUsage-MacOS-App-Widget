@@ -1,0 +1,106 @@
+name: ClaudeUsage
+options:
+  bundleIdPrefix: com.claudeusage
+  deploymentTarget:
+    macOS: "14.0"
+settings:
+  base:
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    SWIFT_VERSION: "5.9"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGNING_REQUIRED: "YES"
+    CODE_SIGNING_ALLOWED: "YES"
+
+targets:
+  ClaudeUsageShared:
+    type: framework
+    platform: macOS
+    sources:
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.claudeusage.shared
+        DEFINES_MODULE: YES
+        GENERATE_INFOPLIST_FILE: YES
+        DYLIB_COMPATIBILITY_VERSION: "1"
+        DYLIB_CURRENT_VERSION: "1"
+        DYLIB_INSTALL_NAME_BASE: "@rpath"
+        INSTALL_PATH: "@rpath"
+
+  ClaudeUsageWidgetExtension:
+    type: app-extension
+    platform: macOS
+    info:
+      path: ClaudeUsageWidget/Info.plist
+      properties:
+        CFBundleDisplayName: Claude Usage
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    sources:
+      - path: ClaudeUsageWidget
+    dependencies:
+      - target: ClaudeUsageShared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.claudeusage.app.widget
+        CODE_SIGN_ENTITLEMENTS: ClaudeUsageWidget/ClaudeUsageWidget.entitlements
+        LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - "@executable_path/../Frameworks"
+          - "@executable_path/../../../../Frameworks"
+
+  ClaudeUsage:
+    type: application
+    platform: macOS
+    info:
+      path: ClaudeUsageApp/Info.plist
+    sources:
+      - path: ClaudeUsageApp
+    dependencies:
+      - target: ClaudeUsageShared
+        embed: true
+      - target: ClaudeUsageWidgetExtension
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.claudeusage.app
+        CODE_SIGN_ENTITLEMENTS: ClaudeUsageApp/ClaudeUsageApp.entitlements
+        LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - "@executable_path/../Frameworks"
+    postBuildScripts:
+      - name: CodeSign Bundles with Entitlements
+        script: |
+          /usr/bin/codesign --force --sign - "${BUILT_PRODUCTS_DIR}/ClaudeUsageShared.framework"
+          /usr/bin/codesign --force --deep --sign - --entitlements "${PROJECT_DIR}/ClaudeUsageWidget/ClaudeUsageWidget.entitlements" "${BUILT_PRODUCTS_DIR}/ClaudeUsage.app/Contents/PlugIns/ClaudeUsageWidgetExtension.appex"
+          find "${BUILT_PRODUCTS_DIR}/ClaudeUsage.app/Contents/MacOS" -name "*.dylib" -exec /usr/bin/codesign --force --sign - {} +
+          /usr/bin/codesign --force --sign - --entitlements "${PROJECT_DIR}/ClaudeUsageApp/ClaudeUsageApp.entitlements" "${BUILT_PRODUCTS_DIR}/ClaudeUsage.app"
+
+  ClaudeUsageTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: ClaudeUsageShared
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  ClaudeUsage:
+    build:
+      targets:
+        ClaudeUsage: all
+        ClaudeUsageShared: all
+        ClaudeUsageWidgetExtension: all
+    run:
+      config: Debug
+  ClaudeUsageTests:
+    build:
+      targets:
+        ClaudeUsageTests: all
+        ClaudeUsageShared: all
+    test:
+      targets:
+        - ClaudeUsageTests
