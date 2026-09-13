@@ -81,6 +81,8 @@ targets:
     platform: macOS
     sources:
       - path: Tests
+      - path: ClaudeUsageWidget/Views
+      - path: ClaudeUsageApp/Views
     dependencies:
       - target: ClaudeUsageShared
     settings:

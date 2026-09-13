@@ -24,7 +24,7 @@ public struct AccountUsageRow: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
 
-                if account.isPrimary {
+                if account.isPrimary && !compact {
                     Text("PRIMARY")
                         .font(.system(size: 7, weight: .bold))
                         .padding(.horizontal, 4)
