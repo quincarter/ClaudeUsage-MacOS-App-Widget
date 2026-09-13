@@ -2,7 +2,8 @@
 
 A native macOS menu bar app and WidgetKit desktop suite built with **SwiftUI** and **Swift 6** for tracking Claude usage across multiple accounts and monitoring Claude's global peak hours in real time.
 
-> ### 💡 Why Claude Usage?
+>[!NOTE]
+>### 💡 Why Claude Usage?
 > **Are you a Claude user? Do you have one or multiple accounts?**
 >
 > If you rely heavily on Claude for coding, research, or daily workflows, you've almost certainly hit that dreaded mid-flow roadblock: suddenly Anthropic gouges your session limits or throttles response speeds during **weekday peak traffic hours** right when you need it most.
