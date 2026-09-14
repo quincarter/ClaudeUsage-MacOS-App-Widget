@@ -2,6 +2,8 @@ import ClaudeUsageShared
 import SwiftUI
 
 public struct MenuBarContentView: View {
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var store = AccountStore.shared
     @State private var currentTime = Date()
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
@@ -107,9 +109,16 @@ public struct MenuBarContentView: View {
             HStack {
                 Button("Open Dashboard") {
                     NSApp.activate(ignoringOtherApps: true)
-                    if let window = NSApp.windows.first(where: { $0.title.contains("Claude") || $0.canBecomeMain }) {
+                    openWindow(id: "dashboard")
+
+                    for window in NSApp.windows where window.identifier?.rawValue == "dashboard" || (window.title.contains("Claude") && !window.className.contains("StatusBar") && !window.className.contains("Panel")) {
+                        if window.isMiniaturized {
+                            window.deminiaturize(nil)
+                        }
                         window.makeKeyAndOrderFront(nil)
                     }
+
+                    dismiss()
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)

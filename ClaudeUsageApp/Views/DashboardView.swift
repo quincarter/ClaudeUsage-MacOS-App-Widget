@@ -70,6 +70,10 @@ public struct DashboardView: View {
         .onReceive(timer) { newTime in
             currentTime = newTime
         }
+        .background(WindowAccessor { window in
+            window.isReleasedWhenClosed = false
+            window.delegate = DashboardWindowDelegate.shared
+        })
     }
 
     private var dashboardContent: some View {
@@ -384,4 +388,31 @@ enum DashboardTab: Hashable {
     case peakSchedule
     case accounts
     case settings
+}
+
+// MARK: - Window Management Helpers
+
+final class DashboardWindowDelegate: NSObject, NSWindowDelegate {
+    static let shared = DashboardWindowDelegate()
+
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        sender.orderOut(nil)
+        return false
+    }
+}
+
+struct WindowAccessor: NSViewRepresentable {
+    let callback: (NSWindow) -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async {
+            if let window = view.window {
+                callback(window)
+            }
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }
