@@ -25,7 +25,7 @@ public struct MediumWidgetView: View {
                     Text("•")
                         .foregroundColor(.secondary)
 
-                    Text(entry.status.statusSubheading)
+                    PeakStatusLiveSubheadingView(status: entry.status)
                         .font(.system(size: 10, weight: .semibold))
                         .foregroundColor(.primary)
                 }

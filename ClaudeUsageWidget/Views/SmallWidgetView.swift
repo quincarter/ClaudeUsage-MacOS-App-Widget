@@ -38,7 +38,7 @@ public struct SmallWidgetView: View {
 
             // Countdown / Subtitle
             VStack(alignment: .leading, spacing: 2) {
-                Text(countdownMainText)
+                countdownMainView
                     .font(.system(size: 16, weight: .bold, design: .rounded))
                     .foregroundColor(.primary)
                     .lineLimit(1)
@@ -161,28 +161,34 @@ public struct SmallWidgetView: View {
         }
     }
 
-    private var countdownMainText: String {
+    @ViewBuilder
+    private var countdownMainView: some View {
         switch entry.status {
-        case .peakActive(_, let remaining):
-            return "Ends in \(DateFormatting.formatDuration(remaining))"
-        case .approachingPeak(_, let remaining):
-            return "In \(DateFormatting.formatDuration(remaining))"
+        case .peakActive(let endsAt, _):
+            Text("Ends in ") + Text(endsAt, style: .relative)
+        case .approachingPeak(let startsAt, _):
+            Text("In ") + Text(startsAt, style: .relative)
         case .offPeak(let nextDate, let until):
             if until > 24 * 3600 {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "EEE h:mm a"
-                return formatter.string(from: nextDate)
+                Text(formatOffPeakDate(nextDate))
+            } else {
+                Text("Peak in ") + Text(nextDate, style: .relative)
             }
-            return "Peak in \(DateFormatting.formatDuration(until))"
         }
+    }
+
+    private func formatOffPeakDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE h:mm a"
+        return formatter.string(from: date)
     }
 
     private var countdownSubText: String {
         switch entry.status {
         case .peakActive:
-            return "5:00 AM – 11:00 AM PT"
+            return "\(entry.slice.localStartString) – \(entry.slice.localEndString)"
         case .approachingPeak:
-            return "Prepare for peak hours"
+            return "Session limits drain faster"
         case .offPeak:
             return entry.slice.hasPeakToday ? "Standard rate limits active" : "Weekend (All Off-Peak)"
         }

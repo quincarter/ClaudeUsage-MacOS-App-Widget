@@ -25,7 +25,7 @@ public struct PeakScheduleView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Claude Peak Window Schedule")
                         .font(.system(size: 20, weight: .bold))
-                    Text("Claude experiences peak global demand on weekdays from 5:00 AM to 11:00 AM Pacific Time (PT).")
+                    Text("Claude experiences peak global demand on weekdays from 1:00 PM to 7:00 PM UTC — session limits drain faster than usual. Weekly limits unchanged.")
                         .font(.system(size: 13))
                         .foregroundColor(.secondary)
                 }
@@ -50,11 +50,11 @@ public struct PeakScheduleView: View {
                         .font(.system(size: 14, weight: .bold))
 
                     VStack(spacing: 6) {
-                        scheduleDayRow(day: "Monday", isWeekday: true, window: "5:00 AM – 11:00 AM PT")
-                        scheduleDayRow(day: "Tuesday", isWeekday: true, window: "5:00 AM – 11:00 AM PT")
-                        scheduleDayRow(day: "Wednesday", isWeekday: true, window: "5:00 AM – 11:00 AM PT")
-                        scheduleDayRow(day: "Thursday", isWeekday: true, window: "5:00 AM – 11:00 AM PT")
-                        scheduleDayRow(day: "Friday", isWeekday: true, window: "5:00 AM – 11:00 AM PT")
+                        scheduleDayRow(day: "Monday", isWeekday: true, window: "1:00 PM – 7:00 PM UTC")
+                        scheduleDayRow(day: "Tuesday", isWeekday: true, window: "1:00 PM – 7:00 PM UTC")
+                        scheduleDayRow(day: "Wednesday", isWeekday: true, window: "1:00 PM – 7:00 PM UTC")
+                        scheduleDayRow(day: "Thursday", isWeekday: true, window: "1:00 PM – 7:00 PM UTC")
+                        scheduleDayRow(day: "Friday", isWeekday: true, window: "1:00 PM – 7:00 PM UTC")
                         scheduleDayRow(day: "Saturday", isWeekday: false, window: "Off-Peak All Day")
                         scheduleDayRow(day: "Sunday", isWeekday: false, window: "Off-Peak All Day")
                     }

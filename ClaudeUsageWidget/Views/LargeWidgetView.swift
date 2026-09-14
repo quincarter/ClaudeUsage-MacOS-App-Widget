@@ -26,7 +26,7 @@ public struct LargeWidgetView: View {
                         Text("—")
                             .foregroundColor(.secondary)
 
-                        Text(entry.status.statusSubheading)
+                        PeakStatusLiveSubheadingView(status: entry.status)
                             .font(.system(size: 11, weight: .semibold))
                             .foregroundColor(.primary)
                     }
@@ -78,16 +78,24 @@ public struct LargeWidgetView: View {
 
             // Regional Schedule Reference Bar
             HStack(spacing: 4) {
-                regionalPill(code: "PT", window: "5A–11A", isCurrent: TimeZone.current.identifier == "America/Los_Angeles")
-                regionalPill(code: "ET", window: "8A–2P", isCurrent: TimeZone.current.identifier == "America/New_York")
-                regionalPill(code: "GMT", window: "1P–7P", isCurrent: TimeZone.current.identifier == "UTC")
-                regionalPill(code: "CET", window: "2P–8P", isCurrent: TimeZone.current.identifier == "Europe/Paris")
+                regionalPill(code: "UTC", window: "1PM–7PM", isCurrent: TimeZone.current.identifier == "UTC")
+                regionalPill(code: "ET", window: regionalWindowString(tzId: "America/New_York"), isCurrent: TimeZone.current.identifier == "America/New_York")
+                regionalPill(code: "PT", window: regionalWindowString(tzId: "America/Los_Angeles"), isCurrent: TimeZone.current.identifier == "America/Los_Angeles")
+                regionalPill(code: "CET", window: regionalWindowString(tzId: "Europe/Paris"), isCurrent: TimeZone.current.identifier == "Europe/Paris")
             }
         }
         .padding(14)
         .containerBackground(for: .widget) {
             Color(nsColor: .windowBackgroundColor)
         }
+    }
+
+    private func regionalWindowString(tzId: String) -> String {
+        guard let tz = TimeZone(identifier: tzId) else { return "" }
+        let slice = PeakTimeEngine.shared.dayTimelineSlice(for: entry.date, targetTimezone: tz)
+        let start = slice.localStartString.replacingOccurrences(of: ":00", with: "").replacingOccurrences(of: " ", with: "")
+        let end = slice.localEndString.replacingOccurrences(of: ":00", with: "").replacingOccurrences(of: " ", with: "")
+        return "\(start)–\(end)"
     }
 
     private func regionalPill(code: String, window: String, isCurrent: Bool) -> some View {

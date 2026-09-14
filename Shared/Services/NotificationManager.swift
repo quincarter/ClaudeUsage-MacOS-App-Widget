@@ -28,13 +28,13 @@ public final class NotificationManager: Sendable {
             // Start Notification
             let startContent = UNMutableNotificationContent()
             startContent.title = "⚡ Claude Peak Hours Begun"
-            startContent.body = "High traffic window active (5:00 AM – 11:00 AM PT). Stricter rate limits and slower generations may occur."
+            startContent.body = "High traffic window active (weekdays 1pm–7pm UTC). Session limits drain faster than usual. Weekly limits unchanged."
             startContent.sound = .default
 
             var startComponents = DateComponents()
-            startComponents.timeZone = engine.pacificTimeZone
+            startComponents.timeZone = engine.utcTimeZone
             startComponents.weekday = weekday
-            startComponents.hour = 5
+            startComponents.hour = 13
             startComponents.minute = 0
 
             let startTrigger = UNCalendarNotificationTrigger(dateMatching: startComponents, repeats: true)
@@ -48,9 +48,9 @@ public final class NotificationManager: Sendable {
             endContent.sound = .default
 
             var endComponents = DateComponents()
-            endComponents.timeZone = engine.pacificTimeZone
+            endComponents.timeZone = engine.utcTimeZone
             endComponents.weekday = weekday
-            endComponents.hour = 11
+            endComponents.hour = 19
             endComponents.minute = 0
 
             let endTrigger = UNCalendarNotificationTrigger(dateMatching: endComponents, repeats: true)

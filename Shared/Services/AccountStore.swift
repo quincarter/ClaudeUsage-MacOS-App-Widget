@@ -82,7 +82,7 @@ public final class AccountStore: ObservableObject, @unchecked Sendable {
                 await self?.refreshAllAccounts()
             }
             DispatchQueue.main.async { [weak self] in
-                self?.refreshTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { _ in
+                self?.refreshTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
                     Task { [weak self] in
                         await self?.refreshAllAccounts()
                     }

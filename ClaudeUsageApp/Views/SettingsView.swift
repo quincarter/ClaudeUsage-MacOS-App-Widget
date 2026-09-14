@@ -10,13 +10,13 @@ public struct SettingsView: View {
     public var body: some View {
         Form {
             Section("Peak Window Notifications") {
-                Toggle("Notify when Peak Hours Start (5:00 AM PT)", isOn: $store.settings.notifyOnPeakStart)
+                Toggle("Notify when Peak Hours Start (1:00 PM UTC)", isOn: $store.settings.notifyOnPeakStart)
                     .onChange(of: store.settings.notifyOnPeakStart) { _ in
                         store.saveSettings()
                         updateNotifications()
                     }
 
-                Toggle("Notify when Peak Hours End (11:00 AM PT)", isOn: $store.settings.notifyOnPeakEnd)
+                Toggle("Notify when Peak Hours End (7:00 PM UTC)", isOn: $store.settings.notifyOnPeakEnd)
                     .onChange(of: store.settings.notifyOnPeakEnd) { _ in
                         store.saveSettings()
                         updateNotifications()

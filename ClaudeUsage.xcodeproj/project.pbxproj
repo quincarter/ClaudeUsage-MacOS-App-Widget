@@ -28,6 +28,7 @@
 		47E2375DFA20B78D31AF7225 /* PeakScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44388E89D37EE9C505F913E3 /* PeakScheduleView.swift */; };
 		52425DF0C74ED055FF3A1D47 /* LargeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F0336CF3FC55BF822793AF /* LargeWidgetView.swift */; };
 		527A2F903190CB803DE343FE /* AccountUsageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A6D89B792BB0721DDFDAD1 /* AccountUsageRow.swift */; };
+		E1A2B3C4D5E6F708192021B2 /* PeakStatusLiveSubheadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2B3C4D5E6F708192021A1 /* PeakStatusLiveSubheadingView.swift */; };
 		56E7A6B643A044E2955F7227 /* ClaudeAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5365302944D4B507787814 /* ClaudeAccount.swift */; };
 		586ADBF01DC2C1C0562C91A2 /* Color+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784F286FB7B64DD55BEBA3BB /* Color+Theme.swift */; };
 		5900888B69CF0FF68AE8DB8F /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A1485525ABC6CCE244AF00 /* MenuBarContentView.swift */; };
@@ -139,6 +140,7 @@
 		784F286FB7B64DD55BEBA3BB /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
 		793084FC853B98EF9ACDBEF8 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		89A6D89B792BB0721DDFDAD1 /* AccountUsageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountUsageRow.swift; sourceTree = "<group>"; };
+		E1A2B3C4D5E6F708192021A1 /* PeakStatusLiveSubheadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeakStatusLiveSubheadingView.swift; sourceTree = "<group>"; };
 		9EC4508CB98BA7580A83C216 /* ClaudeUsageWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ClaudeUsageWidget.entitlements; sourceTree = "<group>"; };
 		9FE263CAED870174284DBC43 /* AccountManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagerView.swift; sourceTree = "<group>"; };
 		ABF3C44A90FC1E8240F782A5 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				89A6D89B792BB0721DDFDAD1 /* AccountUsageRow.swift */,
+				E1A2B3C4D5E6F708192021A1 /* PeakStatusLiveSubheadingView.swift */,
 				F596E494835A97F1F8FBE783 /* PeakTimelineBar.swift */,
 			);
 			path = Components;
@@ -537,6 +540,7 @@
 				2184E7DD6B894A76C180F89E /* Date+Extensions.swift in Sources */,
 				330DB932DA5F9D5B3D606782 /* NotificationManager.swift in Sources */,
 				170AD57477EB7358B23B7A9B /* PeakTimeEngine.swift in Sources */,
+				E1A2B3C4D5E6F708192021B2 /* PeakStatusLiveSubheadingView.swift in Sources */,
 				095D841CBDA61E2E312BAB01 /* PeakTimelineBar.swift in Sources */,
 				7087CD28AF2F9AC52F75AA99 /* PeakWindow.swift in Sources */,
 				41BDB56941A0E8B5E1588C8B /* UsageSnapshot.swift in Sources */,
