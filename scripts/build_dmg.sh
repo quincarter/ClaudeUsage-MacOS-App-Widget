@@ -31,13 +31,23 @@ if ! command -v xcodegen &> /dev/null; then
     exit 1
 fi
 
+CLEAN_BUILD=false
+for arg in "$@"; do
+    if [ "$arg" = "--clean" ]; then
+        CLEAN_BUILD=true
+    fi
+done
+
 # 1. Regenerate Xcode project
 echo "==> Regenerating Xcode project with xcodegen..."
 xcodegen generate
 
 # 2. Build Release Configuration
 echo "==> Building ${APP_NAME} in Release configuration..."
-rm -rf "${DERIVED_DATA_DIR}"
+if [ "${CLEAN_BUILD}" = "true" ]; then
+    echo "==> Cleaning previous build artifacts..."
+    rm -rf "${DERIVED_DATA_DIR}"
+fi
 xcodebuild build \
     -project "${APP_NAME}.xcodeproj" \
     -scheme "${APP_NAME}" \

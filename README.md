@@ -146,6 +146,18 @@ To build the Release configuration and package it into a compressed `.dmg`:
 ```
 This outputs `dist/ClaudeUsage-v1.1.0.dmg` with `/Applications` drag-and-drop installer.
 
+### 6. Cutting & Publishing a Release (Takes Seconds)
+Use the automated release cutter to bump version and build numbers across `project.yml`, `Info.plist`s, and `README.md`, regenerate the Xcode project, commit, tag, and publish:
+```bash
+./scripts/release.sh           # Cuts next patch release (e.g. 1.1.0 -> 1.1.1)
+./scripts/release.sh minor     # Cuts next minor release (e.g. 1.1.0 -> 1.2.0)
+./scripts/release.sh 1.2.5     # Sets an explicit version
+```
+Options:
+- `--local` or `--build`: Builds the DMG locally and publishes directly via GitHub CLI (`gh release create`).
+- `--dry-run`: Previews version calculation and file changes without modifying anything.
+- `--skip-push`: Updates metadata, generates project, and commits locally without pushing to remote.
+
 ---
 
 ## 📄 License
