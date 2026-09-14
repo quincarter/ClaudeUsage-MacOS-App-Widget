@@ -8,7 +8,7 @@ public struct DashboardView: View {
     @State private var showingAddAccountSheet = false
     @State private var accountToEdit: ClaudeAccount?
 
-    let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var status: PeakStatus {
         PeakTimeEngine.shared.currentStatus(at: currentTime)
@@ -70,6 +70,16 @@ public struct DashboardView: View {
         .onReceive(timer) { newTime in
             currentTime = newTime
         }
+        .onAppear {
+            currentTime = Date()
+            Task {
+                await store.refreshAllAccounts()
+            }
+        }
+        .background(WindowAccessor { window in
+            window.isReleasedWhenClosed = false
+            window.delegate = DashboardWindowDelegate.shared
+        })
     }
 
     private var dashboardContent: some View {
@@ -175,12 +185,12 @@ public struct DashboardView: View {
                     Text("•")
                         .foregroundColor(.secondary)
 
-                    Text(status.statusSubheading)
+                    PeakStatusLiveSubheadingView(status: status)
                         .font(.system(size: 15, weight: .semibold))
                 }
 
                 Text(status.isPeak
-                     ? "Claude is currently in the high-demand peak window (5:00 AM – 11:00 AM PT). Rate limits are stricter and generations may be throttled."
+                     ? "Peak hours (weekdays 1pm–7pm UTC) — session limits drain faster than usual. Weekly limits unchanged."
                      : "Claude is operating in standard off-peak conditions with normal message capacity and fast generation speeds.")
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
@@ -384,4 +394,31 @@ enum DashboardTab: Hashable {
     case peakSchedule
     case accounts
     case settings
+}
+
+// MARK: - Window Management Helpers
+
+final class DashboardWindowDelegate: NSObject, NSWindowDelegate {
+    static let shared = DashboardWindowDelegate()
+
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        sender.orderOut(nil)
+        return false
+    }
+}
+
+struct WindowAccessor: NSViewRepresentable {
+    let callback: (NSWindow) -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async {
+            if let window = view.window {
+                callback(window)
+            }
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }

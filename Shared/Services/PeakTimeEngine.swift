@@ -3,35 +3,45 @@ import Foundation
 public final class PeakTimeEngine: Sendable {
     public static let shared = PeakTimeEngine()
 
-    /// Pacific Time calendar is the canonical reference
+    /// Canonical calendar is UTC (1:00 PM – 7:00 PM UTC on weekdays)
+    public let utcCalendar: Calendar
+    public let utcTimeZone: TimeZone
+
+    /// Backwards compatibility properties
     public let ptCalendar: Calendar
     public let pacificTimeZone: TimeZone
 
     public init() {
-        var cal = Calendar(identifier: .gregorian)
-        guard let ptZone = TimeZone(identifier: "America/Los_Angeles") else {
-            fatalError("America/Los_Angeles timezone not found")
+        var uCal = Calendar(identifier: .gregorian)
+        guard let uZone = TimeZone(identifier: "UTC") else {
+            fatalError("UTC timezone not found")
         }
-        cal.timeZone = ptZone
-        self.ptCalendar = cal
-        self.pacificTimeZone = ptZone
+        uCal.timeZone = uZone
+        self.utcCalendar = uCal
+        self.utcTimeZone = uZone
+
+        var pCal = Calendar(identifier: .gregorian)
+        let pZone = TimeZone(identifier: "America/Los_Angeles") ?? uZone
+        pCal.timeZone = pZone
+        self.ptCalendar = pCal
+        self.pacificTimeZone = pZone
     }
 
-    /// Determines if a specific date falls in the Claude peak window (Weekdays 5:00 AM - 11:00 AM PT)
+    /// Determines if a specific date falls in the Claude peak window (Weekdays 1:00 PM - 7:00 PM UTC / 13:00 - 19:00 UTC)
     public func isPeak(at date: Date = Date()) -> Bool {
-        let weekday = ptCalendar.component(.weekday, from: date)
+        let weekday = utcCalendar.component(.weekday, from: date)
         // 1 = Sunday, 2 = Monday, ..., 6 = Friday, 7 = Saturday
         guard weekday >= 2 && weekday <= 6 else {
             return false // Weekends are never peak
         }
 
-        let hour = ptCalendar.component(.hour, from: date)
-        let minute = ptCalendar.component(.minute, from: date)
-        let second = ptCalendar.component(.second, from: date)
+        let hour = utcCalendar.component(.hour, from: date)
+        let minute = utcCalendar.component(.minute, from: date)
+        let second = utcCalendar.component(.second, from: date)
         let totalSecondsInDay = hour * 3600 + minute * 60 + second
 
-        let peakStartSeconds = 5 * 3600       // 05:00:00 AM PT
-        let peakEndSeconds = 11 * 3600        // 11:00:00 AM PT
+        let peakStartSeconds = 13 * 3600       // 13:00:00 UTC (1:00 PM UTC)
+        let peakEndSeconds = 19 * 3600        // 19:00:00 UTC (7:00 PM UTC)
 
         return totalSecondsInDay >= peakStartSeconds && totalSecondsInDay < peakEndSeconds
     }
@@ -55,44 +65,44 @@ public final class PeakTimeEngine: Sendable {
         return .offPeak(nextStartsAt: nextStartsAt, timeUntilNext: untilNext)
     }
 
-    /// Returns the end date of the current peak window
+    /// Returns the end date of the current peak window (19:00:00 UTC)
     public func endOfCurrentPeak(from date: Date) -> Date {
-        var components = ptCalendar.dateComponents([.year, .month, .day], from: date)
-        components.hour = 11
+        var components = utcCalendar.dateComponents([.year, .month, .day], from: date)
+        components.hour = 19
         components.minute = 0
         components.second = 0
-        return ptCalendar.date(from: components) ?? date.addingTimeInterval(3600)
+        return utcCalendar.date(from: components) ?? date.addingTimeInterval(3600)
     }
 
-    /// Finds the exact start date and time of the upcoming peak window
+    /// Finds the exact start date and time of the upcoming peak window (13:00:00 UTC on next weekday)
     public func nextPeakStartDate(from date: Date) -> Date {
         var checkDate = date
         for _ in 0..<8 {
-            let weekday = ptCalendar.component(.weekday, from: checkDate)
+            let weekday = utcCalendar.component(.weekday, from: checkDate)
             let isWeekday = (weekday >= 2 && weekday <= 6)
 
             if isWeekday {
-                var candidateComponents = ptCalendar.dateComponents([.year, .month, .day], from: checkDate)
-                candidateComponents.hour = 5
+                var candidateComponents = utcCalendar.dateComponents([.year, .month, .day], from: checkDate)
+                candidateComponents.hour = 13
                 candidateComponents.minute = 0
                 candidateComponents.second = 0
 
-                if let candidateDate = ptCalendar.date(from: candidateComponents) {
+                if let candidateDate = utcCalendar.date(from: candidateComponents) {
                     if candidateDate > date {
                         return candidateDate
                     }
                 }
             }
 
-            // Advance to next day at 00:01 PT
-            guard let nextDay = ptCalendar.date(byAdding: .day, value: 1, to: checkDate) else {
+            // Advance to next day at 00:01 UTC
+            guard let nextDay = utcCalendar.date(byAdding: .day, value: 1, to: checkDate) else {
                 break
             }
-            var nextComponents = ptCalendar.dateComponents([.year, .month, .day], from: nextDay)
+            var nextComponents = utcCalendar.dateComponents([.year, .month, .day], from: nextDay)
             nextComponents.hour = 0
             nextComponents.minute = 1
             nextComponents.second = 0
-            checkDate = ptCalendar.date(from: nextComponents) ?? nextDay
+            checkDate = utcCalendar.date(from: nextComponents) ?? nextDay
         }
 
         // Fallback: 24h later
@@ -108,27 +118,50 @@ public final class PeakTimeEngine: Sendable {
         localCal.timeZone = targetTimezone
 
         let localStartOfDay = localCal.startOfDay(for: date)
-        let secondsInDay: Double = 86400.0
+        let localEndOfDay = localCal.date(byAdding: .day, value: 1, to: localStartOfDay) ?? localStartOfDay.addingTimeInterval(86400)
+        let secondsInDay: Double = max(1.0, localEndOfDay.timeIntervalSince(localStartOfDay))
 
         let currentSeconds = date.timeIntervalSince(localStartOfDay)
         let currentFraction = min(1.0, max(0.0, currentSeconds / secondsInDay))
 
-        // Determine if today in PT is a weekday
-        let ptWeekday = ptCalendar.component(.weekday, from: date)
-        let hasPeakToday = (ptWeekday >= 2 && ptWeekday <= 6)
+        // Check UTC peak windows that intersect or correspond to this local day (-1, 0, +1 days relative to date)
+        var matchingWindow: (start: Date, end: Date)?
+        for dayOffset in -1...1 {
+            guard let checkDate = localCal.date(byAdding: .day, value: dayOffset, to: date) else { continue }
+            let weekday = utcCalendar.component(.weekday, from: checkDate)
+            guard weekday >= 2 && weekday <= 6 else { continue }
 
-        // Peak start & end in reference to PT today
-        var ptComponents = ptCalendar.dateComponents([.year, .month, .day], from: date)
-        ptComponents.hour = 5
-        ptComponents.minute = 0
-        ptComponents.second = 0
-        let peakStartToday = ptCalendar.date(from: ptComponents) ?? date
+            var comp = utcCalendar.dateComponents([.year, .month, .day], from: checkDate)
+            comp.hour = 13
+            comp.minute = 0
+            comp.second = 0
+            guard let pStart = utcCalendar.date(from: comp) else { continue }
+            comp.hour = 19
+            guard let pEnd = utcCalendar.date(from: comp) else { continue }
 
-        ptComponents.hour = 11
-        let peakEndToday = ptCalendar.date(from: ptComponents) ?? date
+            // Check if window overlaps with local day [localStartOfDay, localEndOfDay]
+            if pEnd > localStartOfDay && pStart < localEndOfDay {
+                matchingWindow = (pStart, pEnd)
+                break
+            }
+        }
 
-        let peakStartSecondsInLocal = peakStartToday.timeIntervalSince(localStartOfDay)
-        let peakEndSecondsInLocal = peakEndToday.timeIntervalSince(localStartOfDay)
+        // If not directly overlapping on this local day (e.g. weekend), find nearest weekday window for reference labels
+        let peakWindow = matchingWindow ?? {
+            var comp = utcCalendar.dateComponents([.year, .month, .day], from: date)
+            comp.hour = 13
+            comp.minute = 0
+            comp.second = 0
+            let s = utcCalendar.date(from: comp) ?? date
+            comp.hour = 19
+            let e = utcCalendar.date(from: comp) ?? date
+            return (s, e)
+        }()
+
+        let hasPeakToday = (matchingWindow != nil)
+
+        let peakStartSecondsInLocal = peakWindow.start.timeIntervalSince(localStartOfDay)
+        let peakEndSecondsInLocal = peakWindow.end.timeIntervalSince(localStartOfDay)
 
         let startFraction = min(1.0, max(0.0, peakStartSecondsInLocal / secondsInDay))
         let endFraction = min(1.0, max(0.0, peakEndSecondsInLocal / secondsInDay))
@@ -137,8 +170,8 @@ public final class PeakTimeEngine: Sendable {
         localFormatter.timeZone = targetTimezone
         localFormatter.dateFormat = "h:mm a"
 
-        let startStr = localFormatter.string(from: peakStartToday)
-        let endStr = localFormatter.string(from: peakEndToday)
+        let startStr = localFormatter.string(from: peakWindow.start)
+        let endStr = localFormatter.string(from: peakWindow.end)
 
         return DayTimelineSlice(
             peakStartFraction: startFraction,
@@ -152,11 +185,11 @@ public final class PeakTimeEngine: Sendable {
 
     /// Generates reference region cards with peak window translated to their local times
     public func regionalWindows(for date: Date = Date(), deviceTimezone: TimeZone = .current) -> [TimezonePeakWindow] {
-        let regions: [(code: String, name: String, tzId: String, window: String)] = [
-            ("PT", "Pacific Time", "America/Los_Angeles", "5:00 AM – 11:00 AM"),
-            ("ET", "Eastern Time", "America/New_York", "8:00 AM – 2:00 PM"),
-            ("GMT", "Greenwich Mean Time (UTC)", "UTC", "1:00 PM – 7:00 PM"),
-            ("CET", "Central European Time", "Europe/Paris", "2:00 PM – 8:00 PM")
+        let regions: [(code: String, name: String, tzId: String)] = [
+            ("UTC", "Coordinated Universal Time", "UTC"),
+            ("ET", "Eastern Time", "America/New_York"),
+            ("PT", "Pacific Time", "America/Los_Angeles"),
+            ("CET", "Central European Time", "Europe/Paris")
         ]
 
         var results: [TimezonePeakWindow] = []
@@ -166,13 +199,15 @@ public final class PeakTimeEngine: Sendable {
             let isCurrent = (tz.identifier == deviceTimezone.identifier)
 
             let timeStr = DateFormatting.formatTimeOnly(date, in: tz)
+            let slice = dayTimelineSlice(for: date, targetTimezone: tz)
+            let windowString = "\(slice.localStartString) – \(slice.localEndString)"
 
             results.append(TimezonePeakWindow(
                 regionCode: region.code,
                 regionName: region.name,
                 timezone: tz,
                 localTimeFormatted: timeStr,
-                windowString: region.window,
+                windowString: windowString,
                 isCurrentDeviceZone: isCurrent
             ))
         }

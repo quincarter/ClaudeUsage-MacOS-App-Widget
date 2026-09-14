@@ -2,9 +2,11 @@ import ClaudeUsageShared
 import SwiftUI
 
 public struct MenuBarContentView: View {
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var store = AccountStore.shared
     @State private var currentTime = Date()
-    let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var status: PeakStatus {
         PeakTimeEngine.shared.currentStatus(at: currentTime)
@@ -32,7 +34,7 @@ public struct MenuBarContentView: View {
                     Text("•")
                         .foregroundColor(.secondary)
 
-                    Text(status.statusSubheading)
+                    PeakStatusLiveSubheadingView(status: status)
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(.primary)
                 }
@@ -107,9 +109,16 @@ public struct MenuBarContentView: View {
             HStack {
                 Button("Open Dashboard") {
                     NSApp.activate(ignoringOtherApps: true)
-                    if let window = NSApp.windows.first(where: { $0.title.contains("Claude") || $0.canBecomeMain }) {
+                    openWindow(id: "dashboard")
+
+                    for window in NSApp.windows where window.identifier?.rawValue == "dashboard" || (window.title.contains("Claude") && !window.className.contains("StatusBar") && !window.className.contains("Panel")) {
+                        if window.isMiniaturized {
+                            window.deminiaturize(nil)
+                        }
                         window.makeKeyAndOrderFront(nil)
                     }
+
+                    dismiss()
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
@@ -128,6 +137,12 @@ public struct MenuBarContentView: View {
         .frame(width: 320)
         .onReceive(timer) { newTime in
             currentTime = newTime
+        }
+        .onAppear {
+            currentTime = Date()
+            Task {
+                await store.refreshAllAccounts()
+            }
         }
     }
 }

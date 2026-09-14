@@ -17,10 +17,12 @@ public final class AccountStore: ObservableObject, @unchecked Sendable {
     @Published public var accounts: [ClaudeAccount] = []
     @Published public var settings: AppSettings = AppSettings()
     @Published public var isRefreshing: Bool = false
+    @Published public var currentPeakStatus: PeakStatus = PeakTimeEngine.shared.currentStatus()
 
     private let userDefaults: UserDefaults
     private let customStorageDirectory: URL?
     private var refreshTimer: Timer?
+    private var peakStatusTimer: Timer?
 
     /// Permanent storage location in Application Support that survives all Xcode rebuilds & cleans
     private var permanentAppSupportURL: URL {
@@ -82,10 +84,13 @@ public final class AccountStore: ObservableObject, @unchecked Sendable {
                 await self?.refreshAllAccounts()
             }
             DispatchQueue.main.async { [weak self] in
-                self?.refreshTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { _ in
+                self?.refreshTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
                     Task { [weak self] in
                         await self?.refreshAllAccounts()
                     }
+                }
+                self?.peakStatusTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
+                    self?.updatePeakStatus()
                 }
             }
         }
@@ -93,6 +98,14 @@ public final class AccountStore: ObservableObject, @unchecked Sendable {
 
     deinit {
         refreshTimer?.invalidate()
+        peakStatusTimer?.invalidate()
+    }
+
+    public func updatePeakStatus() {
+        let newStatus = PeakTimeEngine.shared.currentStatus()
+        if currentPeakStatus != newStatus {
+            currentPeakStatus = newStatus
+        }
     }
 
     public func loadAccounts() {

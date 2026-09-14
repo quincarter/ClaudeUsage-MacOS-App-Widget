@@ -9,7 +9,7 @@ A native macOS menu bar app and WidgetKit desktop suite built with **SwiftUI** a
 > If you rely heavily on Claude for coding, research, or daily workflows, you've almost certainly hit that dreaded mid-flow roadblock: suddenly Anthropic gouges your session limits or throttles response speeds during **weekday peak traffic hours** right when you need it most.
 >
 > I built **Claude Usage** to take the guesswork out of rate limits. Whether you manage a personal Claude Pro account, an enterprise workspace, heavy Claude Code agent sessions, or direct Anthropic API keys, this app gives you complete, real-time visibility over:
-> - **Peak Hour Horizon**: Real-time tracking of Claude's global peak traffic windows (**Weekdays 5:00 AM – 11:00 AM PT / 8:00 AM – 2:00 PM ET**) so you know if you're invoking during high-traffic throttled windows.
+> - **Peak Hour Horizon**: Real-time tracking of Claude's global peak traffic windows (**Weekdays 1:00 PM – 7:00 PM UTC / 9:00 AM – 3:00 PM ET / 6:00 AM – 12:00 PM PT**) — when session limits drain faster than usual.
 > - **Live Session & Weekly Limits**: Instant visibility into your 5-hour rolling session limit, 7-day volume cap, and exact clock-based reset times (e.g., `"Resets at 5:30 PM today"` and `"Weekly: 95% (Fri 6:00 AM)"`).
 > - **Multiple Interfaces**: Seamless access via a full **macOS Desktop Dashboard**, a lightweight **Menu Bar Popover**, and native **Desktop Widgets across all sizes (Small, Medium, Large)** directly on your desktop wallpaper or Notification Center.
 
@@ -68,7 +68,7 @@ Monitor your active accounts and peak status at a glance from your macOS Desktop
 
 ## ⚡️ Peak Hours Active State
 
-During Claude's weekday peak traffic windows (**Monday–Friday, 5:00 AM – 11:00 AM PT**), the desktop widgets and application automatically switch into **Peak Active** mode. Status indicators turn red, the daylight needle tracks inside the illuminated peak band, and active countdowns display exactly when standard response speeds and limits resume.
+During Claude's weekday peak traffic windows (**Monday–Friday, 1:00 PM – 7:00 PM UTC**), the desktop widgets and application automatically switch into **Peak Active** mode. Session limits drain faster than usual, status indicators turn red, the daylight needle tracks inside the illuminated peak band, and live countdowns display exactly when standard rates resume.
 
 <p align="center">
   <img src="assets/screenshots/app-dashboard-peak.png" alt="Claude Usage Main Dashboard in Peak Active State" width="820" />
@@ -88,12 +88,12 @@ During Claude's weekday peak traffic windows (**Monday–Friday, 5:00 AM – 11:
 
 ## ✨ Features
 
-- **Peak Window Detection**: Accurately tracks Claude's peak window (**Weekdays Monday–Friday, 5:00 AM to 11:00 AM Pacific Time**). Weekends are automatically recognized as off-peak all day.
+- **Peak Window Detection**: Accurately tracks Claude's peak window (**Weekdays Monday–Friday, 1:00 PM to 7:00 PM UTC**). Weekends are automatically recognized as off-peak all day.
 - **Regional Timezone Horizon**: Dynamically converts peak windows for your local device timezone and key regions:
-  - **Pacific Time (PT)**: 5:00 AM – 11:00 AM
-  - **Eastern Time (ET)**: 8:00 AM – 2:00 PM
-  - **Greenwich Mean Time (GMT / UTC)**: 1:00 PM – 7:00 PM
-  - **Central European Time (CET)**: 2:00 PM – 8:00 PM
+  - **Coordinated Universal Time (UTC)**: 1:00 PM – 7:00 PM
+  - **Eastern Time (ET)**: 9:00 AM – 3:00 PM (EDT) / 8:00 AM – 2:00 PM (EST)
+  - **Pacific Time (PT)**: 6:00 AM – 12:00 PM (PDT) / 5:00 AM – 11:00 AM (PST)
+  - **Central European Time (CET / CEST)**: 3:00 PM – 9:00 PM (CEST) / 2:00 PM – 8:00 PM (CET)
 - **Multi-Account Monitoring**:
   - **Claude.ai Web Sessions**: Live synchronization of 5-hour rolling session limit (`five_hour`) and 7-day weekly volume cap (`seven_day`), including surface breakdown (Claude Code, Artifacts, Web Chat).
   - **Clock-Based Reset Times**: Shows exact reset times like `"Resets at 5:30 PM today"` and `"Weekly: 95% (Fri 6:00 AM)"`.
