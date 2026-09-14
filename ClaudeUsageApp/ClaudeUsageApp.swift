@@ -21,8 +21,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 struct ClaudeUsageApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var store = AccountStore.shared
-    @State private var currentStatus = PeakTimeEngine.shared.currentStatus()
-    let statusTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
 
     var body: some Scene {
         Window("Claude Usage & Peak Intelligence", id: "dashboard") {
@@ -35,18 +33,25 @@ struct ClaudeUsageApp: App {
         MenuBarExtra {
             MenuBarContentView()
                 .environmentObject(store)
-                .onReceive(statusTimer) { _ in
-                    currentStatus = PeakTimeEngine.shared.currentStatus()
-                }
         } label: {
-            HStack(spacing: 3) {
-                Image(systemName: "sparkles")
-                if currentStatus.isPeak {
-                    Text("PEAK")
-                        .font(.system(size: 9, weight: .black))
-                }
-            }
+            MenuBarLabelView(store: store)
         }
         .menuBarExtraStyle(.window)
+    }
+}
+
+struct MenuBarLabelView: View {
+    @ObservedObject var store: AccountStore
+    let statusTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+
+    var body: some View {
+        HStack(spacing: 3) {
+            Image(systemName: "sparkles")
+            Text(store.currentPeakStatus.menuBarTitle)
+                .font(.system(size: 9, weight: .black))
+        }
+        .onReceive(statusTimer) { _ in
+            store.updatePeakStatus()
+        }
     }
 }

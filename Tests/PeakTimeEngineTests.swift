@@ -158,4 +158,21 @@ final class PeakTimeEngineTests: XCTestCase {
         XCTAssertEqual(etSlice.localStartString, "9:00 AM")
         XCTAssertEqual(etSlice.localEndString, "3:00 PM")
     }
+
+    func testMenuBarTitleTransitions() {
+        // Monday 12:30 UTC -> Approaching Peak (Starts in 30 mins)
+        let approachingDate = makeDate(day: 14, hour: 12, minute: 30, second: 0)
+        let approachingStatus = engine.currentStatus(at: approachingDate)
+        XCTAssertEqual(approachingStatus.menuBarTitle, "PEAK SOON")
+
+        // Monday 14:00 UTC -> Peak Active
+        let peakDate = makeDate(day: 14, hour: 14, minute: 0, second: 0)
+        let peakStatus = engine.currentStatus(at: peakDate)
+        XCTAssertEqual(peakStatus.menuBarTitle, "PEAK")
+
+        // Monday 20:00 UTC -> Off-Peak
+        let offPeakDate = makeDate(day: 14, hour: 20, minute: 0, second: 0)
+        let offPeakStatus = engine.currentStatus(at: offPeakDate)
+        XCTAssertEqual(offPeakStatus.menuBarTitle, "OFF-PEAK")
+    }
 }

@@ -22,6 +22,17 @@ public enum PeakStatus: Equatable, Sendable {
         }
     }
 
+    public var menuBarTitle: String {
+        switch self {
+        case .peakActive:
+            return "PEAK"
+        case .approachingPeak:
+            return "PEAK SOON"
+        case .offPeak:
+            return "OFF-PEAK"
+        }
+    }
+
     public var statusSubheading: String {
         switch self {
         case .peakActive(_, let remaining):
