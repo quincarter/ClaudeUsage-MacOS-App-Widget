@@ -3,7 +3,7 @@ name: cut-release
 description: >-
   Cuts a new version and publishes a release for ClaudeUsage in seconds using scripts/release.sh.
   Use this skill whenever the user asks to "cut a release", "publish a release", "bump version and release",
-  "create a release", or "release a new version".
+  "create a release", "release a new version", or invokes it directly as /cut-release.
 ---
 
 # Cut & Publish Release Workflow
