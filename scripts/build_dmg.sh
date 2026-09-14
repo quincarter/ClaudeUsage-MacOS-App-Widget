@@ -7,8 +7,8 @@ PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 cd "${PROJECT_ROOT}"
 
-# Version specification (argument or default to 1.0.0)
-VERSION="${1:-1.0.0}"
+# Version specification (argument or default to 1.1.0)
+VERSION="${1:-1.1.0}"
 # Strip leading 'v' if present for filename consistency
 VERSION_CLEAN="${VERSION#v}"
 
