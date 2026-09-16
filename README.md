@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/BrandIcon.png" alt="Claude Usage App Icon" width="108" height="108" />
+</p>
+
 # Claude Usage & Peak Time Tracking for macOS
 
 A native macOS menu bar app and WidgetKit desktop suite built with **SwiftUI** and **Swift 6** for tracking Claude usage across multiple accounts and monitoring Claude's global peak hours in real time.
@@ -161,4 +165,5 @@ Options:
 ---
 
 ## 📄 License
-MIT License. Feel free to use, modify, and distribute.
+
+This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute.

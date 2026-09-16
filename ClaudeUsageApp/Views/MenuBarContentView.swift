@@ -21,7 +21,14 @@ public struct MenuBarContentView: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             // Header: Peak Status Pill
-            HStack {
+            HStack(spacing: 8) {
+                Image("BrandIcon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20, height: 20)
+                    .cornerRadius(4.5)
+                    .shadow(color: .black.opacity(0.12), radius: 1, x: 0, y: 0.5)
+
                 HStack(spacing: 5) {
                     Circle()
                         .fill(status.isPeak ? Color.peakRed : Color.offPeakGreen)

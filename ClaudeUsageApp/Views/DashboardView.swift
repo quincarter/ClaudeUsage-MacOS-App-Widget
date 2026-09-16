@@ -23,6 +23,26 @@ public struct DashboardView: View {
     public var body: some View {
         NavigationSplitView {
             List(selection: $selectedTab) {
+                Section {
+                    HStack(spacing: 10) {
+                        Image("BrandIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 32, height: 32)
+                            .cornerRadius(7)
+                            .shadow(color: .black.opacity(0.15), radius: 2, x: 0, y: 1)
+
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("Claude Usage")
+                                .font(.system(size: 13, weight: .bold))
+                            Text("Peak Intelligence")
+                                .font(.system(size: 10))
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+
                 Section("Monitor") {
                     NavigationLink(value: DashboardTab.dashboard) {
                         Label("Live Dashboard", systemImage: "gauge.with.needle.fill")

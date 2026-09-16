@@ -38,9 +38,11 @@ public struct LargeWidgetView: View {
 
                 Spacer()
 
-                Image(systemName: "sparkles")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(.claudeBrand)
+                Image("BrandIcon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 18, height: 18)
+                    .cornerRadius(4)
             }
             .padding(8)
             .background((entry.status.isPeak ? Color.peakRed : Color.offPeakGreen).opacity(0.1))

@@ -15,6 +15,7 @@
 		1E43EE3E9AB6CA385E285F28 /* AccountManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE263CAED870174284DBC43 /* AccountManagerView.swift */; };
 		2184E7DD6B894A76C180F89E /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793084FC853B98EF9ACDBEF8 /* Date+Extensions.swift */; };
 		222CF8074A8DB55146C13522 /* MediumWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85B5A53448B2FC7DC7C3DEF /* MediumWidgetView.swift */; };
+		231E84BEF7668D82562967B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D75CEE30D23C9C35B835D396 /* Assets.xcassets */; };
 		2722B1460B22A93569D44A55 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE5F4BB7CA4121FA2E21875 /* SettingsView.swift */; };
 		279009B79FCE09A849A8FEB7 /* LargeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F0336CF3FC55BF822793AF /* LargeWidgetView.swift */; };
 		29561DB1D09E04B31BEA0955 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB4DFBCA00ADD368F3A904CE /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 		7A2DFC1A09FB520E09CDE2BA /* ClaudeUsageWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 250064F1475E2F3077E3F4DA /* ClaudeUsageWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7BB72B819AF7F4EE7F2A0DBC /* ClaudeUsageShared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3E341FAA05E7D8F78EE199AD /* ClaudeUsageShared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7BFD73DB08D7881F517BAF05 /* PeakStatusLiveSubheadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F87FE0D9809A6D14D4CF334 /* PeakStatusLiveSubheadingView.swift */; };
+		963855D00EC4C00F3CB9AA31 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = A623DAA1F2A201670F80C9AF /* AppIcon.icns */; };
 		972EE4EB0E8964BECE5AC118 /* AccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A14C652251A7F03384C621 /* AccountStore.swift */; };
 		9990CF61FBA858078D009259 /* ClaudeUsageWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F914AA7275DBAA59C0BCBD /* ClaudeUsageWidget.swift */; };
 		9F7725C612E05EF7C5F08306 /* SmallWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386AC0FA366FEF0AF04DDDAB /* SmallWidgetView.swift */; };
@@ -143,6 +145,7 @@
 		89A6D89B792BB0721DDFDAD1 /* AccountUsageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountUsageRow.swift; sourceTree = "<group>"; };
 		9EC4508CB98BA7580A83C216 /* ClaudeUsageWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ClaudeUsageWidget.entitlements; sourceTree = "<group>"; };
 		9FE263CAED870174284DBC43 /* AccountManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagerView.swift; sourceTree = "<group>"; };
+		A623DAA1F2A201670F80C9AF /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		ABF3C44A90FC1E8240F782A5 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		AF54878CCA60D787C86C024F /* ClaudeUsageWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeUsageWidgetBundle.swift; sourceTree = "<group>"; };
 		B1EECA1F89984DBE01FAB1EE /* ClaudeUsageApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ClaudeUsageApp.entitlements; sourceTree = "<group>"; };
@@ -153,6 +156,7 @@
 		CAE5F4BB7CA4121FA2E21875 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		CCA9AC04A8C80FB228FC6F92 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		D247FD93267C06CEA3FB6B65 /* ClaudeUsageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClaudeUsageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D75CEE30D23C9C35B835D396 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D85B5A53448B2FC7DC7C3DEF /* MediumWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumWidgetView.swift; sourceTree = "<group>"; };
 		E0A14C652251A7F03384C621 /* AccountStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStore.swift; sourceTree = "<group>"; };
 		E4F0336CF3FC55BF822793AF /* LargeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidgetView.swift; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 		6A49A5E722F1E24B804441DD /* ClaudeUsageWidget */ = {
 			isa = PBXGroup;
 			children = (
+				D75CEE30D23C9C35B835D396 /* Assets.xcassets */,
 				9EC4508CB98BA7580A83C216 /* ClaudeUsageWidget.entitlements */,
 				C9F914AA7275DBAA59C0BCBD /* ClaudeUsageWidget.swift */,
 				AF54878CCA60D787C86C024F /* ClaudeUsageWidgetBundle.swift */,
@@ -323,6 +328,7 @@
 		ED48042AED6EFCDF540868A7 /* ClaudeUsageApp */ = {
 			isa = PBXGroup;
 			children = (
+				A623DAA1F2A201670F80C9AF /* AppIcon.icns */,
 				EB4DFBCA00ADD368F3A904CE /* Assets.xcassets */,
 				B1EECA1F89984DBE01FAB1EE /* ClaudeUsageApp.entitlements */,
 				C6F209929B4610F9771F509C /* ClaudeUsageApp.swift */,
@@ -340,6 +346,7 @@
 			buildConfigurationList = 508E8FC0A30CD69A0F99CAE9 /* Build configuration list for PBXNativeTarget "ClaudeUsageWidgetExtension" */;
 			buildPhases = (
 				39A46597110ED2D13B4182A9 /* Sources */,
+				00D4F7F83351376F7FE94D44 /* Resources */,
 				D9484DDED1359F5E66B55F48 /* Frameworks */,
 			);
 			buildRules = (
@@ -449,10 +456,19 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		00D4F7F83351376F7FE94D44 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				231E84BEF7668D82562967B5 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		93F8577ADA890DBFF21FF55F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				963855D00EC4C00F3CB9AA31 /* AppIcon.icns in Resources */,
 				29561DB1D09E04B31BEA0955 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

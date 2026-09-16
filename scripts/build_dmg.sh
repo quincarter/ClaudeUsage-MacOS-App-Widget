@@ -79,6 +79,12 @@ cp -R "${BUILT_APP}" "${STAGING_DIR}/${APP_NAME}.app"
 # Create symlink to /Applications for drag-and-drop install
 ln -s /Applications "${STAGING_DIR}/Applications"
 
+# Set volume icon if available
+if [ -f "${PROJECT_ROOT}/assets/AppIcon.icns" ]; then
+    cp "${PROJECT_ROOT}/assets/AppIcon.icns" "${STAGING_DIR}/.VolumeIcon.icns"
+    SetFile -a C "${STAGING_DIR}" 2>/dev/null || true
+fi
+
 # 4. Create DMG with hdiutil
 echo "==> Creating compressed DMG installer at ${DMG_PATH}..."
 rm -f "${DMG_PATH}"

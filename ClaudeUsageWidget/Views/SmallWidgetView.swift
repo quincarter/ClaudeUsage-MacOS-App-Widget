@@ -31,9 +31,11 @@ public struct SmallWidgetView: View {
 
                 Spacer()
 
-                Image(systemName: "sparkles")
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(.claudeBrand)
+                Image("BrandIcon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 14, height: 14)
+                    .cornerRadius(3)
             }
 
             // Countdown / Subtitle

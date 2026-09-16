@@ -64,6 +64,29 @@ public struct SettingsView: View {
                     Text("This replaces your configured accounts with the initial sample demo accounts.")
                 }
             }
+
+            Section("About") {
+                HStack(spacing: 14) {
+                    Image("BrandIcon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 44, height: 44)
+                        .cornerRadius(9)
+                        .shadow(color: .black.opacity(0.15), radius: 2, x: 0, y: 1)
+
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("Claude Usage & Peak Intelligence")
+                            .font(.system(size: 13, weight: .bold))
+                        Text("Version 1.1.0 (Build 2) • macOS 14.0+")
+                            .font(.system(size: 11))
+                            .foregroundColor(.secondary)
+                        Text("MIT License • Developed with Claude")
+                            .font(.system(size: 10))
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .padding(.vertical, 4)
+            }
         }
         .formStyle(.grouped)
         .padding(20)

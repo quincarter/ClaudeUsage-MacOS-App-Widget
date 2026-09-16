@@ -61,6 +61,8 @@ targets:
       properties:
         CFBundleShortVersionString: "1.1.0"
         CFBundleVersion: "2"
+        CFBundleIconFile: AppIcon
+        CFBundleIconName: AppIcon
     sources:
       - path: ClaudeUsageApp
     dependencies:
@@ -71,6 +73,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.claudeusage.app
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_ENTITLEMENTS: ClaudeUsageApp/ClaudeUsageApp.entitlements
         LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
