@@ -27,10 +27,10 @@ A native macOS menu bar app and WidgetKit desktop suite built with **SwiftUI** a
 
 The easiest way to install Claude Usage is to download the pre-built `.dmg` from [GitHub Releases](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases):
 
-[![Download DMG](https://img.shields.io/badge/Download-macOS%20DMG%20(v1.1.0)-007AFF?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases/latest/download/ClaudeUsage-v1.1.0.dmg)
+[![Download DMG](https://img.shields.io/badge/Download-macOS%20DMG%20(v1.1.1)-007AFF?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases/latest/download/ClaudeUsage-v1.1.1.dmg)
 [![GitHub Release](https://img.shields.io/github/v/release/quincarter/ClaudeUsage-MacOS-App-Widget?style=for-the-badge&color=2ea44f)](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases/latest)
 
-1. Download [**ClaudeUsage-v1.1.0.dmg**](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases/latest/download/ClaudeUsage-v1.1.0.dmg).
+1. Download [**ClaudeUsage-v1.1.1.dmg**](https://github.com/quincarter/ClaudeUsage-MacOS-App-Widget/releases/latest/download/ClaudeUsage-v1.1.1.dmg).
 2. Open the `.dmg` and drag **ClaudeUsage.app** into your **Applications** folder.
 3. Launch **ClaudeUsage** from `/Applications`.
 
@@ -146,9 +146,9 @@ Copy `ClaudeUsage.app` to `/Applications/` to enable WidgetKit discovery in macO
 ### 5. Package as DMG Installer
 To build the Release configuration and package it into a compressed `.dmg`:
 ```bash
-./scripts/build_dmg.sh v1.1.0
+./scripts/build_dmg.sh v1.1.1
 ```
-This outputs `dist/ClaudeUsage-v1.1.0.dmg` with `/Applications` drag-and-drop installer.
+This outputs `dist/ClaudeUsage-v1.1.1.dmg` with `/Applications` drag-and-drop installer.
 
 ### 6. Cutting & Publishing a Release (Takes Seconds)
 Use the automated release cutter to bump version and build numbers across `project.yml`, `Info.plist`s, and `README.md`, regenerate the Xcode project, commit, tag, and publish:
