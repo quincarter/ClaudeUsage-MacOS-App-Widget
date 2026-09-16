@@ -77,7 +77,9 @@ public struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 3) {
                         Text("Claude Usage & Peak Intelligence")
                             .font(.system(size: 13, weight: .bold))
-                        Text("Version 1.1.0 (Build 2) • macOS 14.0+")
+                        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.1.0"
+                        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+                        Text("Version \(version) (Build \(build)) • macOS 14.0+")
                             .font(.system(size: 11))
                             .foregroundColor(.secondary)
                         Text("MIT License • Developed with Claude")
